@@ -10,7 +10,23 @@ select username from users where exists (select total_amount from orders where u
 
 mysql> select * from users where user_id in ( select total_amount from orders where users.user_id=orders.user_id);
 Empty set (0.026 sec)
+ select username from users where user_id = ( select user_id from orders where status='paid');
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select username from users where user_id = ( select user_id from orders where status='unpaid');
++-------------+
+| username    |
++-------------+
+| nehaprakash |
++-------------+
+1 row in set (0.008 sec)
 
+mysql> select username from users where user_id = ( select user_id from orders where total_amount>500);
++-------------+
+| username    |
++-------------+
+| nehaprakash |
++-------------+
+1 row in set (0.007 sec)
 mysql> select * from users where user_id in ( select user_id from orders);
 +---------+---------------+---------------+---------+------------+-----------+---------------------+
 | user_id | username      | password_hash | email   | first_name | last_name | created_at          |
